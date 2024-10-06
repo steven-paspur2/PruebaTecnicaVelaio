@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Task} from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
@@ -19,18 +20,16 @@ export class ListaTareasComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Cargar tareas desde el servicio
     this.taskService.getTasks().subscribe((tasks) => {
       this.tasks = tasks;
     });
   }
 
-  // Método para cambiar el filtro
   setFilter(filter: 'all' | 'completed' | 'pending'): void {
     this.filter = filter;
   }
 
-  // Método para filtrar tareas por estado
+
   filterTasks(): Task[] {
     if (this.filter === 'completed') {
       return this.tasks.filter(task => task.completed);
@@ -40,19 +39,25 @@ export class ListaTareasComponent implements OnInit {
     return this.tasks;
   }
 
-  // Alternar el estado de completado de una tarea
   toggleCompletion(taskId: number) {
     this.taskService.toggleTaskCompletion(taskId);
   }
 
   redirectToCreateTask() {
-
-    console.error("REDIRECCION");
-
     try {
       this.router.navigate(['/crear-tarea']);
     } catch (error) {
       console.error('Error al navegar a crear-tarea:', error);
+    }
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    if (event.tab.textLabel === 'Todas') {
+      this.setFilter('all');
+    } else if (event.tab.textLabel === 'Completadas') {
+      this.setFilter('completed');
+    } else if (event.tab.textLabel === 'Pendientes') {
+      this.setFilter('pending');
     }
   }
 

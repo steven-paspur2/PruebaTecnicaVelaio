@@ -13,8 +13,8 @@ export class TareasFormularioComponent implements OnInit {
 
   constructor(
     private fb: UntypedFormBuilder,
-    private taskService: TaskService,  // Inyectar el TaskService
-    private router: Router             // Inyectar el Router para redirigir
+    private taskService: TaskService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -56,18 +56,16 @@ export class TareasFormularioComponent implements OnInit {
 
   submit() {
     if (this.taskForm.valid) {
-      // Obtener los datos del formulario y agregarlos como una nueva tarea
       const newTask = this.taskForm.value;
-      newTask.id = Date.now();  // Generar un ID único usando la fecha actual
-      newTask.completed = false; // Si quieres establecer un estado por defecto
-
-      this.taskService.addTask(newTask);  // Agregar la tarea usando el servicio
-
-      // Redirigir a la lista de tareas después de guardar
+      newTask.id = Date.now();
+      newTask.completed = false;
+      this.taskService.addTask(newTask);
       this.router.navigate(['/lista-tareas']);
-
-      // Limpiar el formulario
       this.taskForm.reset();
     }
+  }
+
+  redirectToTaskList(){
+    this.router.navigate(['/lista-tareas']);
   }
 }

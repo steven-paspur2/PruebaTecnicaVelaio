@@ -1,0 +1,16 @@
+.mat-card-white {
+  background-color: #FFFFFF;
+  color: #534d4c;
+}
+
+.custom-checkbox {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.custom-button-task {
+  margin-left: auto;
+}

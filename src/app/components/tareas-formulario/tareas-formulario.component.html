@@ -1,66 +1,68 @@
-<div class="task-form-container">
-  <h2>Crear Nueva Tarea</h2>
+<div class="task-form-container mat-elevation-z8">
+  <mat-card>
+    <mat-card-title>Crear Nueva Tarea</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="taskForm" (ngSubmit)="submit()">
+        <mat-form-field>
+          <input matInput id="title" formControlName="title" type="text" />
+          <mat-label>Nombre de la tarea:</mat-label>
+          <mat-error *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+            El nombre es obligatorio y debe tener al menos 5 caracteres.
+          </mat-error>
+        </mat-form-field>
 
-  <!-- Formulario de creación de tareas -->
-  <form [formGroup]="taskForm" (ngSubmit)="submit()">
-    <!-- Campo: Nombre de la tarea -->
-    <div>
-      <label for="title">Nombre de la tarea:</label>
-      <input id="title" formControlName="title" type="text" />
-      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
-        <small>El nombre es obligatorio y debe tener al menos 5 caracteres.</small>
-      </div>
-    </div>
+        <mat-form-field>
+          <input matInput id="deadline" formControlName="deadline" type="date" />
+          <mat-label>Fecha límite:</mat-label>
+          <mat-error *ngIf="taskForm.get('deadline')?.invalid && taskForm.get('deadline')?.touched">
+            La fecha límite es obligatoria.
+          </mat-error>
+        </mat-form-field>
 
-    <!-- Campo: Fecha límite -->
-    <div>
-      <label for="deadline">Fecha límite:</label>
-      <input id="deadline" formControlName="deadline" type="date" />
-      <div *ngIf="taskForm.get('deadline')?.invalid && taskForm.get('deadline')?.touched">
-        <small>La fecha límite es obligatoria.</small>
-      </div>
-    </div>
+        <mat-card-subtitle>Personas Asociadas:</mat-card-subtitle>
+        <div formArrayName="people">
+          <div *ngFor="let person of people.controls; let i = index" [formGroupName]="i">
+            <mat-card>
+              <mat-card-title>Persona {{ i + 1 }}</mat-card-title>
+              <mat-card-content>
+                <mat-form-field>
+                  <input matInput id="fullName" formControlName="fullName" type="text" />
+                  <mat-label>Nombre completo:</mat-label>
+                  <mat-error *ngIf="person.get('fullName')?.invalid && person.get('fullName')?.touched">
+                    El nombre es obligatorio, único y debe tener al menos 5 caracteres.
+                  </mat-error>
+                </mat-form-field>
 
-    <!-- Sección: Personas asociadas -->
-    <div formArrayName="people">
-      <h3>Personas Asociadas:</h3>
+                <mat-form-field>
+                  <mat-label>Edad:</mat-label>
+                  <input matInput id="age" formControlName="age" type="number" />
+                  <mat-error *ngIf="person.get('age')?.invalid && person.get('age')?.touched">
+                    La persona debe tener al menos 18 años.
+                  </mat-error>
+                </mat-form-field>
 
-      <div *ngFor="let person of people.controls; let i = index" [formGroupName]="i">
-        <!-- Nombre completo de la persona -->
-        <div>
-          <label for="fullName">Nombre completo:</label>
-          <input id="fullName" formControlName="fullName" type="text" />
-          <div *ngIf="person.get('fullName')?.invalid && person.get('fullName')?.touched">
-            <small>El nombre es obligatorio, único y debe tener al menos 5 caracteres.</small>
+                <mat-card-subtitle>Habilidades:</mat-card-subtitle>
+                <div formArrayName="skills">
+                  <div *ngFor="let skill of getSkills(i).controls; let j = index">
+                    <mat-form-field>
+                      <input matInput [formControlName]="j" type="text" />
+                    </mat-form-field>
+                    <button mat-button color="warn" (click)="removeSkill(i, j)">Eliminar Habilidad</button>
+                  </div>
+                  <button mat-button color="primary" (click)="addSkill(i)">Añadir Habilidad</button>
+                </div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="warn" (click)="removePerson(i)">Eliminar Persona</button>
+              </mat-card-actions>
+            </mat-card>
           </div>
+          <button mat-raised-button color="primary" (click)="addPerson()">Añadir Persona</button>
         </div>
 
-        <!-- Edad de la persona -->
-        <div>
-          <label for="age">Edad:</label>
-          <input id="age" formControlName="age" type="number" />
-          <div *ngIf="person.get('age')?.invalid && person.get('age')?.touched">
-            <small>La persona debe tener al menos 18 años.</small>
-          </div>
-        </div>
-
-        <!-- Habilidades de la persona -->
-        <div formArrayName="skills">
-          <h4>Habilidades:</h4>
-          <div *ngFor="let skill of getSkills(i).controls; let j = index">
-            <input [formControlName]="j" type="text" />
-            <button (click)="removeSkill(i, j)">Eliminar Habilidad</button>
-          </div>
-          <button (click)="addSkill(i)">Añadir Habilidad</button>
-        </div>
-
-        <button (click)="removePerson(i)">Eliminar Persona</button>
-      </div>
-
-      <button (click)="addPerson()">Añadir Persona</button>
-    </div>
-
-    <!-- Botón para guardar la tarea -->
-    <button type="submit" [disabled]="taskForm.invalid">Guardar Tarea</button>
-  </form>
+        <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Guardar Tarea</button>
+        <button mat-raised-button color="warn" type="button" (click)="redirectToTaskList()">Regresar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -9,10 +9,10 @@ import { TaskService } from 'src/app/services/task.service';
   styleUrls: ['./tareas-formulario.component.css']
 })
 export class TareasFormularioComponent implements OnInit {
-  taskForm!: FormGroup;
+  taskForm!: UntypedFormGroup;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private taskService: TaskService,  // Inyectar el TaskService
     private router: Router             // Inyectar el Router para redirigir
   ) {}
@@ -25,12 +25,12 @@ export class TareasFormularioComponent implements OnInit {
     });
   }
 
-  get people(): FormArray {
-    return this.taskForm.get('people') as FormArray;
+  get people(): UntypedFormArray {
+    return this.taskForm.get('people') as UntypedFormArray;
   }
 
-  getSkills(personIndex: number): FormArray {
-    return this.people.at(personIndex).get('skills') as FormArray;
+  getSkills(personIndex: number): UntypedFormArray {
+    return this.people.at(personIndex).get('skills') as UntypedFormArray;
   }
 
   addPerson() {

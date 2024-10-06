@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-formulario-persona',
@@ -7,14 +7,14 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./formulario-persona.component.css']
 })
 export class FormularioPersonaComponent implements OnInit {
-  @Input() personForm!: FormGroup;
+  @Input() personForm!: UntypedFormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {}
 
-  get skills(): FormArray {
-    return this.personForm.get('skills') as FormArray;
+  get skills(): UntypedFormArray {
+    return this.personForm.get('skills') as UntypedFormArray;
   }
 
   addSkill() {

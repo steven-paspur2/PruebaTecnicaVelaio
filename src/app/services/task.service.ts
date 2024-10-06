@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
   private tasksSubject = new BehaviorSubject<Task[]>(this.tasks);
 
   constructor() {
-    // Crear algunas tareas de ejemplo
+
     const exampleTasks: Task[] = [
       {
         id: 1,
@@ -40,27 +40,26 @@ import { BehaviorSubject } from 'rxjs';
       }
     ];
 
-    // Agregar las tareas de ejemplo al servicio
+
     exampleTasks.forEach(task => this.addTask(task));
   }
 
-  // Método para agregar una tarea
+
   addTask(task: Task) {
     this.tasks.push(task);
     this.tasksSubject.next(this.tasks);
   }
 
-  // Método para obtener tareas como observable
   getTasks() {
     return this.tasksSubject.asObservable();
   }
 
-  // Método para establecer el filtro
+
   setFilter(filter: 'all' | 'completed' | 'pending'): void {
     this.filter = filter;
   }
 
-  // Método para filtrar las tareas
+
   filterTasks(): Task[] {
     if (this.filter === 'completed') {
       return this.tasks.filter(task => task.completed);
@@ -70,7 +69,6 @@ import { BehaviorSubject } from 'rxjs';
     return this.tasks;
   }
 
-  // Método para alternar el estado de una tarea
   toggleTaskCompletion(taskId: number) {
     const task = this.tasks.find(task => task.id === taskId);
     if (task) {

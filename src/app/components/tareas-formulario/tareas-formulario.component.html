@@ -1,0 +1,66 @@
+<div class="task-form-container">
+  <h2>Crear Nueva Tarea</h2>
+
+  <!-- Formulario de creación de tareas -->
+  <form [formGroup]="taskForm" (ngSubmit)="submit()">
+    <!-- Campo: Nombre de la tarea -->
+    <div>
+      <label for="title">Nombre de la tarea:</label>
+      <input id="title" formControlName="title" type="text" />
+      <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+        <small>El nombre es obligatorio y debe tener al menos 5 caracteres.</small>
+      </div>
+    </div>
+
+    <!-- Campo: Fecha límite -->
+    <div>
+      <label for="deadline">Fecha límite:</label>
+      <input id="deadline" formControlName="deadline" type="date" />
+      <div *ngIf="taskForm.get('deadline')?.invalid && taskForm.get('deadline')?.touched">
+        <small>La fecha límite es obligatoria.</small>
+      </div>
+    </div>
+
+    <!-- Sección: Personas asociadas -->
+    <div formArrayName="people">
+      <h3>Personas Asociadas:</h3>
+
+      <div *ngFor="let person of people.controls; let i = index" [formGroupName]="i">
+        <!-- Nombre completo de la persona -->
+        <div>
+          <label for="fullName">Nombre completo:</label>
+          <input id="fullName" formControlName="fullName" type="text" />
+          <div *ngIf="person.get('fullName')?.invalid && person.get('fullName')?.touched">
+            <small>El nombre es obligatorio, único y debe tener al menos 5 caracteres.</small>
+          </div>
+        </div>
+
+        <!-- Edad de la persona -->
+        <div>
+          <label for="age">Edad:</label>
+          <input id="age" formControlName="age" type="number" />
+          <div *ngIf="person.get('age')?.invalid && person.get('age')?.touched">
+            <small>La persona debe tener al menos 18 años.</small>
+          </div>
+        </div>
+
+        <!-- Habilidades de la persona -->
+        <div formArrayName="skills">
+          <h4>Habilidades:</h4>
+          <div *ngFor="let skill of getSkills(i).controls; let j = index">
+            <input [formControlName]="j" type="text" />
+            <button (click)="removeSkill(i, j)">Eliminar Habilidad</button>
+          </div>
+          <button (click)="addSkill(i)">Añadir Habilidad</button>
+        </div>
+
+        <button (click)="removePerson(i)">Eliminar Persona</button>
+      </div>
+
+      <button (click)="addPerson()">Añadir Persona</button>
+    </div>
+
+    <!-- Botón para guardar la tarea -->
+    <button type="submit" [disabled]="taskForm.invalid">Guardar Tarea</button>
+  </form>
+</div>
